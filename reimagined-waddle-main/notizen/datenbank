@@ -1,0 +1,11 @@
+Datenbank wird nur erstellt, wenn der Ordner datenbank fehlt
+
+Warum die Variablen $defaultDatabasePath und $databasefilename so heißen müssen, weiß ich nicht mehr ^^
+
+
+IDEE: zum sortieren der Kommentare die KID verwende und nicht DATUM, da die ID von älteste zu neueste aufsteigend automatisch angelegt wird.
+        Ist vllt. einfacher als das über das zu machen
+
+
+Bei XAMPP PFAD in sqlite_dao.php anpassen:
+$this->defaultDatabasePath = $_SERVER["DOCUMENT_ROOT"] . "PROJEKTNAME/datenbank/";

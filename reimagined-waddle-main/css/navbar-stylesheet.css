@@ -1,0 +1,149 @@
+/* Stylesheet wurde inspiriert durch: https://alvarotrigo.com/blog/hamburger-menu-css-responsive/ */
+
+.overlay{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity .35s, visibility .35s, height .35s;
+  overflow: hidden;
+  background: black;
+  z-index: -1;
+}
+
+.navbar {
+display: block;
+height: 100px;
+width: 100%;
+background-color: #094CDE;
+margin: 0px;  
+z-index: 9;
+}
+
+nav#navbar{
+  position: sticky;
+  top: 0;
+}
+
+.navbar ul {
+width: 100%;
+height: 100%;
+margin: 0px auto;
+padding: 0px;
+display: flex;
+justify-content: space-evenly;
+align-items: center;
+z-index: 9;
+}
+
+#navbar-liste{
+  margin-left: 0px;
+  margin-right: 0px;
+}
+
+.navbar li {
+list-style-type: none;
+font-size: 2rem;
+}
+
+.navbar a {
+color: #B9FAF8;
+font-size: 1.5rem;
+text-decoration: none;
+}
+
+#navbar a:hover {
+text-decoration: underline;
+}
+
+#home-logo, .nav-elemente {
+  margin-right: auto;
+}
+
+#anmelden {
+  margin-right: auto;
+  margin-left: auto;
+}
+
+#hamburger-check{
+display: none;
+}
+
+#hamburger-menu {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  width: 50px;
+  height: 50px;
+  display: none;
+  border: none;
+  padding: 0px;
+  margin: 0px;
+  font-family: 'Cabin', Sans-serif;
+  background: linear-gradient(
+    to bottom, 
+    #094CDE, #094CDE 20%, 
+    white 20%, white 40%, 
+    #094CDE 40%, #094CDE 60%, 
+    white 60%, white 80%, 
+    #094CDE 80%, #094CDE 100%
+  );
+}
+
+#hamburger-menu #hamburger {
+  visibility: hidden;
+  position: fixed;
+  top: 0;
+  left: -250px;
+  width: 250px;
+  height: 100%;
+  background-color: #094CDE;
+  transition: 0.3s;
+  padding: 0px 10px;
+  box-sizing: border-box;
+}
+
+#hamburger-menu h3 {
+color: #B9FAF8;
+font-size: 2.2rem;
+}
+
+#hamburger-menu ul {
+padding-left: 0px;
+}
+
+#hamburger-menu li {
+list-style-type: none;
+line-height: 3rem;
+}
+
+#hamburger-menu a {
+color: #B9FAF8;
+font-size: 1.3rem;
+text-decoration: none;
+}
+
+#hamburger-menu a:hover {
+text-decoration: underline;
+}
+
+#hamburger-check:checked + #hamburger-menu #hamburger {
+  visibility: visible;
+  left: 0;
+}
+#hamburger-check:checked ~ .overlay{
+ visibility: visible;
+opacity: 0.4;
+}
+
+@media screen and (max-width: 768px) {
+.navbar {
+  visibility: hidden;
+}
+#hamburger-menu {
+  display: inline;
+}
+}

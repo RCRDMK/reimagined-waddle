@@ -1,0 +1,29 @@
+Sessionvariablen die beim angemeldeten User existieren:
+    $_SESSION["login"] = true; <- zeigt ob der User wirklich angemeldet ist
+    $_SESSION["u_id"] = int(UID) ; <- UID des Users
+    $_SESSION["lesezeichenAnzeigen"] = bool; <- gibt an, ob die Lesezeichen oder eigene Einträge im Profil angezeigt werden
+
+Passwort Hash beim registrieren:
+    $hashedPasswort = password_hash($passwort, PASSWORD_DEFAULT);
+
+strcmp gibt 0 zurück, wenn string gleich ist
+
+Feature für, wenn noch Zeit: "zuletzt besucht" -> speichern mit Session, was die letzten 4 Einträge waren -> anzeigen im index
+
+$_FILES['file']['tmp_name']; <- tmp.name vom Server erstellt
+$_FILES['file']['name']; <- originaler name
+$_FILES['file'] ["type"] <- gibt MIME Type zurück https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types
+
+"JPEG und GIF sind in allen grafischen Browsern zu finden, ebenso mittlerweile das etwas jüngere PNG" https://developer.mozilla.org/de/docs/Web/HTML/Element/img
+
+Check über MIME ist nicht wirklich sicher, man kann scheinbar auch hiermit arbeiten https://www.php.net/manual/en/ref.fileinfo.php
+
+enctype="multipart/form-data" muss in form verwendet werden, wenn mehrere verschiedene input Typen da sind
+
+
+/*
+ * Erlaubte Formate:
+ * Bild: jpg, jpeg, png, gif
+ * Video: mp4, webm, ogg -> HTML Video kann nur die -> https://www.w3schools.com/html/html5_video.asp
+ * Dokument: pdf
+ */
