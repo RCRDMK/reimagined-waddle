@@ -1,0 +1,570 @@
+:root {
+    --white: #F5F7F0;
+    --blue: #094CDE;
+    --gray: #AFB0AC;
+    --red: #BA2609;
+}
+
+body {
+    background-color: var(--white);
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    font-family: Arial, serif;
+    margin: unset;
+}
+
+h1 {
+    text-align: center;
+}
+
+a {
+    color: var(--blue);
+    text-decoration: none;
+}
+
+.body {
+    padding-right: 5vw;
+    padding-left: 5vw;
+    padding-bottom: 10px;
+}
+
+
+/**********************************************************************************************************************/
+
+/* --Dropdown-- */
+.dropdown-kategorien, .dropdown, .dropdown-sortieren, input[type=submit] {
+    background-color: var(--blue);
+    border-radius: 10px;
+    color: var(--white);
+    padding: 10px;
+    font-size: 16px;
+    border: 2px inset var(--gray);
+    cursor: pointer;
+}
+
+/**********************************************************************************************************************/
+
+/* --Übersicht der Einträge-- */
+
+.ueberischt-eintraege-body {
+    /*padding-left: 5vw;
+    padding-right: 5vw;*/
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: flex-start;
+    align-content: flex-start;
+}
+
+.ueberischt-eintraege-eintrag {
+    border-style: solid;
+    border-width: thin;
+    border-color: var(--gray);
+    width: 300px;
+    height: 300px;
+    margin: 1vh;
+}
+
+.uebersicht-video-thumbnail {
+    width: 100%;
+    height: 270px;
+}
+
+.uebersicht-video-link {
+    width: 300px;
+}
+
+.uebersicht-bild {
+    width: 300px;
+    height: 300px
+}
+
+.uebersicht-dokument {
+    width: 300px;
+    height: 270px;
+}
+
+.uebersicht-dokument-link {
+    width: 300px;
+}
+
+
+/* --Suche-- */
+
+#suche-uebersicht-profile-body {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+
+}
+
+#suche-uebersicht-profil {
+    border-style: solid;
+    border-width: thin;
+    border-color: var(--gray);
+    width: 300px;
+    margin: 1vh;
+    word-break: break-all;
+}
+
+/**********************************************************************************************************************/
+
+/* --anmelden-- */
+#anmelden-body {
+    display: flex;
+    flex-direction: column;
+    width: 60vw;
+    align-self: center;
+}
+
+#anmelden-email-adresse {
+    width: 100%;
+    margin-bottom: 1vh;
+}
+
+#anmelden-passwort {
+    width: 100%;
+    margin-bottom: 1vh;
+}
+
+#anmelden-button-anmelden {
+    width: 100%;
+    margin-bottom: 1vh;
+}
+
+#anmelden-button-abbrechen {
+    width: 100%;
+    margin-bottom: 1vh;
+    background-color: var(--red);
+}
+
+/* --registrieren-- */
+
+#registrieren-body {
+    display: flex;
+    flex-direction: column;
+    width: 60vw;
+    align-self: center;
+}
+
+/*Schritt 1*/
+
+#registrieren-email-adresse-check {
+    width: 100%;
+    margin-bottom: 1vh;
+}
+
+#registrieren-1-button-submit {
+    width: 100%;
+    margin-bottom: 1vh;
+}
+
+#registrieren-1-button-abbrechen {
+    width: 100%;
+    margin-bottom: 1vh;
+    background-color: var(--red);
+}
+
+/*Schritt 2*/
+#registrieren-schrittZwei-mail {
+    width: 100%;
+    margin-bottom: 1vh;
+}
+
+#registrieren-name {
+    width: 100%;
+    margin-bottom: 1vh;
+}
+
+#benutzername-vergeben {
+    margin-bottom: 1vh;
+    color: var(--red);
+}
+
+#registrieren-passwort {
+    width: 100%;
+    margin-bottom: 1vh;
+}
+
+
+#registrieren-passwort-wiederholen {
+    width: 100%;
+    margin-bottom: 1vh;
+}
+
+#passwort-nicht-identisch {
+    margin-bottom: 1vh;
+    color: var(--red);
+}
+
+#registrieren-2-datenschutz-div {
+    width: 100%;
+    margin-bottom: 1vh;
+}
+
+#registrieren-2-eula-div {
+    width: 100%;
+    margin-bottom: 1vh;
+}
+
+#registrieren-2-button-submit {
+    width: 100%;
+    margin-bottom: 1vh;
+}
+
+/**********************************************************************************************************************/
+
+/* --Profil --*/
+
+#profil-buttons {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.profil-button {
+    padding-right: 0.5vw;
+}
+
+/* --Profil-Einstellungen-- */
+
+#profil-einstellungen-body {
+    display: flex;
+    flex-direction: column;
+    align-self: center;
+    width: 70vw;
+}
+
+#profil-einstellungen-mail {
+    margin-bottom: 1vh;
+}
+
+#profil-einstellungen-name {
+    margin-bottom: 1vh;
+}
+
+#einstellungen-passwort-aendern-passwort-alt {
+    width: 100%;
+    margin-bottom: 0.5vh;
+}
+
+#einstellungen-passwort-aendern-passwort-neu {
+    width: 100%;
+    margin-bottom: 0.5vh;
+}
+
+#einstellungen-passwort-aendern-submit {
+    width: 100%;
+    margin-bottom: 1vh;
+}
+
+#einstellungen-loeschen-form {
+    width: 100%;
+    padding-bottom: 1vh;
+}
+
+#einstellungen-loeschen-submit {
+    width: 100%;
+    background-color: var(--red);
+}
+
+/**********************************************************************************************************************/
+
+/* --Eintrag-- */
+
+#eintrag-body {
+    display: flex;
+    flex-direction: column;
+    align-self: center;
+    width: 70vw;
+}
+
+#eintrag-section {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+
+}
+
+#eintrag-buttons {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-self: center;
+}
+
+.eintrag-logik-button {
+    padding-right: 1vw;
+    padding-bottom: 1vh;
+}
+
+#eintrag-loeschen-button {
+    background-color: var(--red);
+}
+
+.eintrag-inhalt {
+    max-width: 100%;
+    align-self: center;
+    margin-bottom: 1vh;
+}
+
+#eintrag-dokument {
+    width: 100%;
+    min-height: 70vh;
+}
+
+#eintrag-informationen {
+    padding-top: 1vh;
+    display: flex;
+    flex-direction: row;
+    align-self: center;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    width: 100%;
+    margin-bottom: 1vh;
+}
+
+#eintrag-beschreibung {
+    border-style: solid;
+    border-width: thin;
+    border-color: var(--gray);
+    width: 100%;
+    margin-bottom: 1vh;
+    word-break: break-all;
+
+}
+
+#eintrag-tags {
+    border-style: solid;
+    border-width: thin;
+    border-color: var(--gray);
+    width: 100%;
+    margin-bottom: 1vh;
+    word-break: break-all;
+}
+
+#kommentarbereich-section {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+#kommentar-erstellen-text {
+    width: 100%;
+    margin-bottom: 0.5vh;
+    resize: none;
+}
+
+#kommentar-erstellen-submit {
+    width: 100%;
+    margin-bottom: 1vh;
+}
+
+#kommentare-sortieren {
+    margin-bottom: 1vh;
+}
+
+.kommentar {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    margin-bottom: 1vh;
+}
+
+.kommentar-inhalt {
+    margin-bottom: 0.5vh;
+    width: 100%;
+}
+
+.kommentar-ersteller-name {
+    margin-bottom: 0.5vh;
+}
+
+.kommentar-ersteller-name-link {
+    word-break: break-all;
+}
+
+.kommentar-text {
+    border-style: solid;
+    border-width: thin;
+    border-color: var(--gray);
+    width: 100%;
+    word-break: break-all;
+    margin-bottom: 0.5vh;
+}
+
+.kommentar-datum {
+    width: 100%;
+    word-break: break-all;
+    margin-bottom: 0.5vh;
+}
+
+#kommentarbereich .kommentar-loeschen-button {
+    width: 100%;
+    background-color: var(--red);
+}
+
+/* --Neuer Eintrag-- */
+#neu-body {
+    display: flex;
+    flex-direction: column;
+    align-self: center;
+    width: 70vw;
+}
+
+#neu-type-div {
+    padding-bottom: 1vh;
+}
+
+#neu-titel {
+    width: 100%;
+    margin-bottom: 1vh;
+}
+
+#neu-beschreibung {
+    width: 100%;
+    margin-bottom: 1vh;
+    resize: none;
+}
+
+#neu-tags {
+    width: 100%;
+    margin-bottom: 1vh;
+}
+
+#neu-hochladen {
+    width: 100%;
+    margin-bottom: 1vh;
+}
+
+#neu-submit {
+    width: 100%;
+    margin-bottom: 1vh;
+}
+
+#neu-abbrechen-submit {
+    width: 100%;
+    background-color: var(--red);
+}
+
+/* --Eintrag bearbeiten-- */
+
+#bearbeiten-body {
+    display: flex;
+    flex-direction: column;
+    width: 70vw;
+    align-self: center;
+}
+
+#bearbeiten-titel {
+    width: 100%;
+    margin-bottom: 1vh;
+}
+
+#bearbeiten-beschreibung {
+    width: 100%;
+    margin-bottom: 1vh;
+    resize: none;
+}
+
+#bearbeiten-tags {
+    width: 100%;
+    margin-bottom: 1vh;
+}
+
+#bearbeiten-submit {
+    width: 100%;
+    margin-bottom: 1vh;
+}
+
+#bearbeiten-abbrechen-submit {
+    width: 100%;
+    background-color: var(--red);
+}
+
+
+@media screen and (max-width: 620px) {
+    .ueberischt-eintraege-eintrag {
+        border-style: solid;
+        border-width: thin;
+        border-color: var(--gray);
+        width: 100%;
+        height: auto;
+    }
+
+    .ueberischt-eintraege-eintrag {
+        width: 100%;
+    }
+
+    .uebersicht-video-link {
+        width: 100%;
+    }
+
+    .uebersicht-bild {
+        width: 100%;
+    }
+
+    .uebersicht-dokument {
+        width: 80%; /*damit man neben dem dokument per Hand scrollen kann*/
+        height: 20vh;
+    }
+
+    .uebersicht-dokument-link {
+        width: 100%;
+    }
+}
+
+/**********************************************************************************************************************/
+/*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-FOOTER-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*/
+/**********************************************************************************************************************/
+
+
+/*https://stackoverflow.com/questions/643879/css-to-make-html-page-footer-stay-at-bottom-of-the-page-with-a-minimum-height-b, autor vsync, 1) Flexbox*/
+
+#footer {
+    display: block;
+    height: 50px;
+    width: 100%;
+    margin: 0px;
+    z-index: 9;
+    background-color: var(--blue);
+    margin-top: auto;
+    bottom: 0;
+
+}
+
+#footer ul {
+    max-width: 800px;
+    width: 100%;
+    height: 100%;
+    margin: 0px auto;
+    padding: 0px;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    z-index: 9;
+}
+
+#footer li {
+    list-style-type: none;
+    font-size: 2rem;
+}
+
+#footer a {
+    font-size: 1.5rem;
+    text-decoration: none;
+    color: var(--white);
+}
+
+#footer a:visited {
+    color: var(--white);
+}
+
+@media screen and (max-width: 768px) {
+    #footer {
+        visibility: hidden;
+    }
+}
