@@ -1,166 +1,217 @@
 <?php
-session_start();
-require_once('php_import_files/sqlite_dao.php');
-require_once ('php_import_files/kommentarbereich.php');
+include "import/head.php";
+
+include_once "logik/sqlite_dao.php";
 $datenbank = new sqlite_dao();
 
-$s_uid = -1;
 $angemeldet = false;
-if (isset($_SESSION["u_id"])) {//Check, ob User angemeldet ist, wenn ja, speichere uid
-    $s_uid = $_SESSION["u_id"];
-    if ($s_uid >= 0) {
-        $angemeldet = true;
+$eigenerEintrag = false;
+$eintragArray = array();
+
+//Check, ob angemeldet
+if (isset($_SESSION["u_id"]) && $_SESSION["u_id"] >= 0) {
+    $angemeldet = true;
+}
+
+//Hole Daten aus Datenbank; Check, ob "eigener Eintrag"; Check, ob Lesezeichen gesetzt
+if (isset($_GET["eid"])) {
+    $eintragArray = $datenbank->getEintrag($_GET["eid"]);
+
+    //Check, ob Eintrag in Datenbank
+    if (!empty($eintragArray)) {
+        $e_eid = $eintragArray["EID"];
+        $e_titel = $eintragArray["TITEL"];
+        $e_originalername = $eintragArray["ORIGINALERNAME"];
+        $e_typ = $eintragArray["TYP"];
+        $e_beschreibung = $eintragArray["BESCHREIBUNG"];
+        $e_tags = $eintragArray["TAGS"];
+        $e_datum = $eintragArray["DATUM"];
+        $e_uid = $eintragArray["UID"];
+
+        $e_erstellerName = $datenbank->getAccountName($e_uid);//Name des Erstellers
+        $e_lesezeichenAnzahl = $datenbank->getLeseichenAnzahl($e_eid);//Anzahl der Lesezeichen
+
+        //Der Pfad zum Inhalt der Datei. Mittels substr() wird die Dateiendung ermittelt, da mit verschiedenen Dateitypen gearbeitet wird:
+        $e_pfad = "./datenbank/upload/" . $e_eid . "." . substr($e_originalername, strrpos($e_originalername, '.') + 1);
+
+        $kommentareArray = $datenbank->kommentareVonEintrag($e_eid);//Die einzelnen Kommentare
+
+        //Elemente für angemeldete User:
+        if ($angemeldet) {
+            //Check, ob eigener Eintrag
+            if ($_SESSION["u_id"] == $e_uid) {
+                $eigenerEintrag = true;
+            }
+
+            //Check, ob Lesezeichen gesetzt und erstelle den Namen für den Lesezeichenbutton
+            if ($datenbank->isLesezeichenGesetzt($_SESSION["u_id"], $e_eid)) {
+                $lesezeichenButtonName = "Lesezeichen löschen";
+            } else {
+                $lesezeichenButtonName = "Lesezeichen setzen";
+            }
+        }
+    } else {
+        header("Location: index.php?err=eintrag0");//kein Eintrag
+        exit();
     }
+} else {
+    header("Location: index.php?err=eintrag0");//kein Eintrag
+    exit();
 }
 ?>
 
-<!DOCTYPE html>
-<html lang="de">
-<head>
-    <title>Eintrag</title>
-    <?php include "php_import_files/head.php" ?>
-</head>
-<body>
+    <!-- BODY -->
+    <section id="eintrag-body">
+        <h1><?php echo $e_titel ?></h1>
+        <section id="eintrag-section">
+            <h2 hidden>Eintrag</h2>
+            <!-- Interaktion mit Eintrag Buttons -->
+            <?php if ($angemeldet) { ?>
+                <div id="eintrag-buttons">
 
-<?php
-include "php_import_files/navbar-auswahl-logik.php";
-
-if (isset($_GET["e_id"])) {//Check, ob ein Eintrag gewählt wurde
-    $s_eid = $_GET["e_id"];
-    $eintragDaten = $datenbank->getEintrag($s_eid); //Array mit den Daten, aus der Datenbank
-
-
-    if (isset($eintragDaten["EID"])) { //Check, ob die Daten geladen wurden
-        $e_eid = $eintragDaten["EID"];
-        $e_titel = $eintragDaten["TITEL"];
-        $e_originalerName = $eintragDaten["ORIGINALERNAME"];
-        $e_typ = $eintragDaten["TYP"];
-        $e_beschreibung = $eintragDaten["BESCHREIBUNG"];
-        $e_tags = $eintragDaten["TAGS"];
-        $e_datum = $eintragDaten["DATUM"];
-        $e_uid = $eintragDaten["UID"];
-
-        //Der Pfad zum Inhalt der Datei. Mittels substr() wird die Dateiendung ermittelt, da mit verschiedenen Dateitypen gearbeitet wird:
-        $pfad = "./datenbank/upload/" . $e_eid . "." . substr($e_originalerName, strrpos($e_originalerName, '.') + 1);
-
-        ?>
-        <section>
-
-            <div class="grid-eintrag">
-                <!-- Schaltet die benötigten Buttons frei -->
-                <?php if ($angemeldet) {//Check, ob User angemeldet
-                if ($s_uid == $e_uid) { ?><!-- Check, ob Eintrag User gehört -->
-                <form id="eintrag-bearbeiten-button" action="eintrag-editieren.php"
-                      method="post" enctype="multipart/form-data">
-                    <div>
-                        <input type="hidden" value="<?php echo $e_eid ?>" name="eintrag-bearbeiten-eid">
-                        <input type="submit" value="Bearbeiten">
-                    </div>
-                </form>
-                <form id="eintrag-loeschen-button"
-                      action="./php_import_files/eintrag-loeschen-logik.php"
-                      method="post">
-                    <div>
-                        <input type="hidden" value="<?php echo $e_eid ?>" name="eintrag-loeschen-eid">
-                        <input type="submit" value="Löschen">
-                    </div>
-                </form>
-                <?php
-                }
-                if ($datenbank->isLesezeichenGesetzt($s_uid, $s_eid)) {//Check, ob lesezeichen gesetzt ist und platziert den passenden Button
-                ?><!-- Wenn gesetzt, dann verwende Lösch-Button -->
-                <form id="eintrag-lesezeichen-entfernen-button"
-                      action="php_import_files/eintrag-lesezeichen-entfernen-logik.php"
-                      method="post">
-                    <div>
-                        <input type="hidden" value="<?php echo $e_eid ?>" name="lesezeichen-loeschen-eid">
-                        <input type="submit" value="Lesezeichen löschen">
-                    </div>
-                </form>
-                <?php
-                } else { ?>
-                    <form id="eintrag-lesezeichen-setzen-button"
-                          action="php_import_files/eintrag-lesezeichen-setzen-logik.php"
-                          method="post">
-                        <div>
-                            <input type="hidden" value="<?php echo $e_eid ?>" name="lesezeichen-setzen-eid">
-                            <input type="submit" value="Lesezeichen setzen">
-                        </div>
+                    <!-- Lesezeichen -->
+                    <form class="eintrag-logik-button" action="logik/lesezeichen_logik.php" method="post"
+                          enctype="multipart/form-data">
+                        <input type="hidden" name="csrf" value="<?php echo $_SESSION["csrf"] ?>">
+                        <input type="hidden" value="<?php echo $e_eid ?>" name="lesezeichen-eid">
+                        <input type="submit" value="<?php echo $lesezeichenButtonName ?>">
                     </form>
-                    <?php
-                }
-                } ?>
-                <h2><?php echo $e_titel ?></h2>
-                <?php
-                switch ($e_typ) {//check ob file mit Kategorie übereinstimmt
-                    case "text":
-                        //TODO: TEXT darstellen
-                        break;
-                    case "bild":
-                        ?>
-                        <img src="<?php echo $pfad ?>" alt="<?php echo $e_titel ?>">
-                        <?php
-                        break;
-                    case"video":
-                        ?>
-                        <video>
-                            <source src="<?php echo $pfad ?>" type="video/webm">
-                            <source src="<?php echo $pfad ?>" type="video/mp4">
-                            <source src="<?php echo $pfad ?>" type="video/ogg">
-                            <!-- https://www.w3schools.com/html/html5_video.asp -->
-                        </video>
-                        <?php
-                        break;
-                    case"dokument":
-                        ?>
 
-                        <iframe src="<?php echo $pfad ?>#toolbar=0"
-                                title="<?php echo $e_titel ?>"></iframe>
-                        <?php
-                        break;
-                } ?>
-                <span>
-                    <a class="profil-link"
-                       href="profil.php?id=<?php echo $e_uid ?>"> <?php echo $datenbank->getAccountName($e_uid) ?></a>
+                    <?php if ($eigenerEintrag) { ?>
+                        <!-- Bearbeiten -->
+                        <form class="eintrag-logik-button" action="eintrag_bearbeiten.php" method="post"
+                              enctype="multipart/form-data">
+                            <input type="hidden" name="csrf" value="<?php echo $_SESSION["csrf"] ?>">
+                            <input type="hidden" value="<?php echo $e_eid ?>" name="eintrag-bearbeiten-eid">
+                            <input type="submit" value="Eintrag bearbeiten">
+                        </form>
+
+                        <!-- Löschen -->
+                        <form class="eintrag-logik-button" action="logik/eintrag_loeschen_logik.php" method="post"
+                              enctype="multipart/form-data">
+                            <input type="hidden" name="csrf" value="<?php echo $_SESSION["csrf"] ?>">
+                            <input type="hidden" value="<?php echo $e_eid ?>" name="eintrag-loeschen-eid">
+                            <input id="eintrag-loeschen-button" type="submit" value="Eintrag löschen">
+                        </form>
+                    <?php } ?>
+
+                </div>
+            <?php } ?>
+
+            <!-- Inhalt -->
+            <?php
+            switch ($e_typ) {//check ob file mit Kategorie übereinstimmt
+                case "bild":
+                    ?>
+                    <img class="eintrag-inhalt" id="eintrag-bild" src="<?php echo $e_pfad ?>"
+                         alt="<?php echo $e_titel ?>">
+                    <?php
+                    break;
+                case"video":
+                    ?>
+                    <video class="eintrag-inhalt" id="eintrag-video" controls>
+                        <source src="<?php echo $e_pfad ?>" type="video/webm">
+                        <source src="<?php echo $e_pfad ?>" type="video/mp4">
+                        <source src="<?php echo $e_pfad ?>" type="video/ogg">
+                        <!-- https://www.w3schools.com/html/html5_video.asp -->
+                    </video>
+                    <?php
+                    break;
+                case"dokument":
+                    ?>
+
+                    <iframe class="eintrag-inhalt" id="eintrag-dokument" src="<?php echo $e_pfad ?>#toolbar=1"
+                            title="<?php echo $e_titel ?>"></iframe>
+                    <?php
+                    break;
+            } ?>
+            <!-- Eintrag Information -->
+            <div id="eintrag-informationen">
+                <span id="eintrag-profil-ersteller" title="Der Ersteller">
+                    <a id="eintrag-profil-ersteller-link"
+                       href="profil.php?pid=<?php echo $e_uid ?>"><?php echo $e_erstellerName ?></a>
                 </span>
-                <span>
+                <span id="eintrag-lesezeichen-anzahl" title="Anzahl von gesetzten Lesezeichen">
+                    <?php echo $e_lesezeichenAnzahl ?>
+                </span>
+                <span id="eintrag-datum" title="Hochgeladen am">
                     <?php echo $e_datum ?>
                 </span>
-                <div><?php echo $e_beschreibung ?></div>
-                <div><?php echo $e_tags ?></div>
+            </div>
+            <!-- Beschreibung-->
+            Beschreibung:
+            <div id="eintrag-beschreibung">
+                <?php echo $e_beschreibung ?>
+            </div>
+            <!-- Tags -->
+            Tags:
+            <div id="eintrag-tags">
+                <?php echo $e_tags ?>
             </div>
         </section>
-        <!--Kommentar-Sektion-->
-        <section>
-            <?php
-            if ($angemeldet) {//neuer Kommentar
-                ?>
-                <div id="neuer-kommentar">
-                    <form action="php_import_files/kommentar-verfassen-logik.php" method="post">
-                        <label for="neuer-kommentar">Neuen Kommentar verfassen: </label><br>
-                        <textarea name="eintrag-neuer-kommentar-text" cols="5" rows="5" maxlength="1500"  aria-labelledby="neuer-kommentar"
-                                  placeholder="Hast du Gedanken über dieses Werk?" required></textarea>
-                        <input type="hidden" value="<?php echo $e_eid?>" name="eintrag-neuer-kommentar-eid">
-                        <input type="submit" value="Kommentar veröffentlichen">
-                    </form>
-                </div>
-                <?php
-            }
-            ?>
-            <select id="kommentare_sortieren" class="dropdown">
-                <option>Neu</option>
-                <option>Älteste</option>
+
+        <!-- Kommentarbereich -->
+        <section id="kommentarbereich-section">
+            <h2 hidden>Kommentarbereich</h2>
+            <!-- Kommentar erstellen -->
+            <?php if ($angemeldet) { ?>
+
+                <label id="kommentar-erstellen-text-label" for="kommentar-erstellen-text">Dein Kommentar</label>
+                <form action="logik/kommentar_erstellen_logik.php" enctype="multipart/form-data" method="post">
+
+                    <input type="hidden" name="csrf" value="<?php echo $_SESSION["csrf"] ?>">
+
+                    <textarea id="kommentar-erstellen-text" name="kommentar-erstellen-text" rows="5"
+                              maxlength="1500" placeholder="Teile deine Meinung mit" required></textarea>
+
+                    <label hidden for="kommentar-erstellen-eid">Eintrag Id</label>
+                    <input hidden value="<?php echo $e_eid ?>" id="kommentar-erstellen-eid"
+                           name="kommentar-erstellen-eid">
+
+                    <input id="kommentar-erstellen-submit" type="submit" value="Kommentar veröffentlichen">
+                </form>
+            <?php } ?>
+
+            <!-- Dropdown Sortieren -->
+            <label hidden for="kommentare-sortieren">Kommentar Dropdown</label>
+            <select id="kommentare-sortieren" class="dropdown" onchange="kommentareSortieren()">
+                <option>Alte Kommentare</option>
+                <option>Neue Kommentare</option>
             </select>
-            <div id="kommentarbereich">
-                <?php new kommentarbereich($e_eid)?>
+
+            <!-- Generierung der Anzeige für die Kommentare -->
+            <div id="kommentarbereich" class="kommentarbereich">
+                <?php
+                foreach ($kommentareArray as $key) {
+                    $k_kid = $key["KID"];
+                    $k_text = $key["KOMMENTARTEXT"];
+                    $k_datum = $key["DATUM"];
+                    $k_uid = $key["UID"];
+                    $k_username = $key["NAME"];
+                    ?>
+                    <div class="kommentar">
+                        <div class="kommentar-inhalt">
+                            <div class="kommentar-ersteller-name">
+                                <a class="kommentar-ersteller-name-link"
+                                   href="profil.php?pid=<?php echo $k_uid ?>"> <?php echo $k_username ?></a>
+                            </div>
+                            <div class="kommentar-text"><?php echo $k_text ?></div>
+                            <div class="kommentar-datum"><?php echo $k_datum ?></div>
+                        </div>
+
+                        <?php if (isset($_SESSION["u_id"]) && $_SESSION["u_id"] == $k_uid) { ?>
+                                <form action="logik/kommentar_loeschen_logik.php"
+                                      method="post" enctype="multipart/form-data">
+                                    <input type="hidden" name="csrf" value="<?php echo $_SESSION["csrf"] ?>">
+                                    <input type="hidden" value="<?php echo $e_eid ?>" name="kommentar-loeschen-eid">
+                                    <input type="hidden" value="<?php echo $k_kid ?>" name="kommentar-loeschen-kid">
+                                    <input class="kommentar-loeschen-button" type="submit" value="Löschen">
+                                </form>
+                        <?php } ?>
+                    </div>
+                    <?php
+                } ?>
             </div>
-            <br>
-
         </section>
-
-        <?php
-    }
-}
-include "php_import_files/footer.php" ?>
-</body>
-</html>
+    </section>
+<?php include "import/foot.php" ?>
