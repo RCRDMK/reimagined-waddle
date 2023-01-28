@@ -4,7 +4,7 @@
 
 Im Rahmen eines Universitätsmodul der Carl-von-Ossietzky Universität Oldenburg wurde diese Webseite im Sommersemester 2022 entwickelt. Die gestellte Aufgabe war eine digitale Kunstausstellung zu entwickeln. Da Kunst sich aber nicht definieren lässt, sind auf dieser Seite Kunst jeglicher Art willkommen. Insbesondere sind die Künste von Amateuren willkommen, um ihnen einen Platz zu geben, ihre Künste ohne Angst ausstellen zu können. Die anvisierte Zielgruppe sind hier junge Künstler, welche sich durch Bilder, Videos und Dokumenten künstlerisch ausdrücken können.
 
-Sofern nicht anders angemerkt, wurde sämtlicher Code selber geschrieben.
+Sofern nicht anders angemerkt, wurde sämtlicher Code selber von mir und meinem Gruppenpartner geschrieben.
 
 ## Voraussetzungen
 
